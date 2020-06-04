@@ -1,6 +1,6 @@
-package cn.keking.anti_reptile.rule;
+package cn.keking.kkanticrawler.rule;
 
-import cn.keking.anti_reptile.config.AntiReptileProperties;
+import cn.keking.kkanticrawler.config.KKAntiCrawlerProperties;
 import org.redisson.api.RAtomicLong;
 import org.redisson.api.RMap;
 import org.redisson.api.RedissonClient;
@@ -25,7 +25,7 @@ public class IpRule extends AbstractRule {
     private RedissonClient redissonClient;
 
     @Autowired
-    private AntiReptileProperties properties;
+    private KKAntiCrawlerProperties properties;
 
     private static final String RATELIMITER_COUNT_PREFIX = "ratelimiter_request_count";
     private static final String RATELIMITER_EXPIRATIONTIME_PREFIX = "ratelimiter_expirationtime";

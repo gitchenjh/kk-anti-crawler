@@ -1,4 +1,4 @@
-package cn.keking.anti_reptile.module;
+package cn.keking.kkanticrawler.module;
 
 import java.io.Serializable;
 

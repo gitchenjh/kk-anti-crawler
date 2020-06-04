@@ -1,11 +1,11 @@
-package cn.keking.anti_reptile.interceptor;
+package cn.keking.kkanticrawler.interceptor;
 
-import cn.keking.anti_reptile.annotation.AntiReptile;
-import cn.keking.anti_reptile.config.AntiReptileProperties;
-import cn.keking.anti_reptile.module.VerifyImageDTO;
-import cn.keking.anti_reptile.rule.RuleActuator;
-import cn.keking.anti_reptile.util.CrosUtil;
-import cn.keking.anti_reptile.util.VerifyImageUtil;
+import cn.keking.kkanticrawler.annotation.KKAntiCrawler;
+import cn.keking.kkanticrawler.config.KKAntiCrawlerProperties;
+import cn.keking.kkanticrawler.module.VerifyImageDTO;
+import cn.keking.kkanticrawler.rule.RuleActuator;
+import cn.keking.kkanticrawler.util.CrosUtil;
+import cn.keking.kkanticrawler.util.VerifyImageUtil;
 import org.springframework.context.ApplicationContext;
 import org.springframework.core.annotation.AnnotationUtils;
 import org.springframework.core.io.ClassPathResource;
@@ -29,10 +29,10 @@ import java.util.regex.Pattern;
  * @author chenjh
  * @since 2020/2/4 17:45
  */
-public class AntiReptileInterceptor extends HandlerInterceptorAdapter {
+public class KKAntiCrawlerInterceptor extends HandlerInterceptorAdapter {
 
 
-    private String antiReptileForm;
+    private String antiCrawlerForm;
 
     private RuleActuator actuator;
 
@@ -42,14 +42,14 @@ public class AntiReptileInterceptor extends HandlerInterceptorAdapter {
 
     private VerifyImageUtil verifyImageUtil;
 
-    private AtomicBoolean initialized = new AtomicBoolean(false);
+    private final AtomicBoolean initialized = new AtomicBoolean(false);
 
     public void init(ServletContext context) {
         ClassPathResource classPathResource = new ClassPathResource("verify/index.html");
         try {
             classPathResource.getInputStream();
             byte[] bytes = FileCopyUtils.copyToByteArray(classPathResource.getInputStream());
-            this.antiReptileForm = new String(bytes, StandardCharsets.UTF_8);
+            this.antiCrawlerForm = new String(bytes, StandardCharsets.UTF_8);
         } catch (IOException e) {
             System.out.println("反爬虫验证模板加载失败！");
             e.printStackTrace();
@@ -58,8 +58,8 @@ public class AntiReptileInterceptor extends HandlerInterceptorAdapter {
         assert ctx != null;
         this.actuator = ctx.getBean(RuleActuator.class);
         this.verifyImageUtil = ctx.getBean(VerifyImageUtil.class);
-        this.includeUrls = ctx.getBean(AntiReptileProperties.class).getIncludeUrls();
-        this.globalFilterMode = ctx.getBean(AntiReptileProperties.class).isGlobalFilterMode();
+        this.includeUrls = ctx.getBean(KKAntiCrawlerProperties.class).getIncludeUrls();
+        this.globalFilterMode = ctx.getBean(KKAntiCrawlerProperties.class).isGlobalFilterMode();
         if (this.includeUrls == null) {
             this.includeUrls = new ArrayList<>();
         }
@@ -78,16 +78,16 @@ public class AntiReptileInterceptor extends HandlerInterceptorAdapter {
             return true;
         }
         Method method = handlerMethod.getMethod();
-        AntiReptile antiReptile = AnnotationUtils.findAnnotation(method, AntiReptile.class);
-        boolean isAntiReptileAnnotation = antiReptile != null;
+        KKAntiCrawler kkAntiCrawler = AnnotationUtils.findAnnotation(method, KKAntiCrawler.class);
+        boolean isKKAntiCrawlerAnnotation = kkAntiCrawler != null;
         String requestUrl = request.getRequestURI();
-        if (isIntercept(requestUrl, isAntiReptileAnnotation) && !actuator.isAllowed(request, response)) {
+        if (isIntercept(requestUrl, isKKAntiCrawlerAnnotation) && !actuator.isAllowed(request, response)) {
             CrosUtil.setCrosHeader(response);
             response.setContentType("text/html;charset=utf-8");
             response.setStatus(509);
             VerifyImageDTO verifyImage = verifyImageUtil.generateVerifyImg();
             verifyImageUtil.saveVerifyCodeToRedis(verifyImage);
-            String str1 = this.antiReptileForm.replace("verifyId_value", verifyImage.getVerifyId());
+            String str1 = this.antiCrawlerForm.replace("verifyId_value", verifyImage.getVerifyId());
             String str2 = str1.replaceAll("verifyImg_value", verifyImage.getVerifyImgStr());
             String str3 = str2.replaceAll("realRequestUri_value", requestUrl);
             response.getWriter().write(str3);
@@ -100,11 +100,11 @@ public class AntiReptileInterceptor extends HandlerInterceptorAdapter {
     /**
      * 是否拦截
      * @param requestUrl 请求uri
-     * @param isAntiReptileAnnotation 是否有AntiReptile注解
+     * @param isAntiCrawlerAnnotation 是否有AntiCrawler注解
      * @return 是否拦截
      */
-    public boolean isIntercept(String requestUrl, Boolean isAntiReptileAnnotation) {
-        if (this.globalFilterMode || isAntiReptileAnnotation || this.includeUrls.contains(requestUrl)) {
+    public boolean isIntercept(String requestUrl, Boolean isAntiCrawlerAnnotation) {
+        if (this.globalFilterMode || isAntiCrawlerAnnotation || this.includeUrls.contains(requestUrl)) {
             return true;
         } else {
             for (String includeUrl : includeUrls) {

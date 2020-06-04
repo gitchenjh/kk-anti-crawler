@@ -1,4 +1,4 @@
-package cn.keking.anti_reptile.config;
+package cn.keking.kkanticrawler.config;
 
 import org.springframework.boot.context.properties.ConfigurationProperties;
 
@@ -10,8 +10,8 @@ import java.util.concurrent.TimeUnit;
  * @author kl @kailing.pub
  * @since 2019/7/9
  */
-@ConfigurationProperties(prefix = "anti.reptile.manager")
-public class AntiReptileProperties {
+@ConfigurationProperties(prefix = "kk.anti.crawler")
+public class KKAntiCrawlerProperties {
 
     /**
      * 是否启用反爬虫插件

@@ -1,4 +1,4 @@
-package cn.keking.anti_reptile.config;
+package cn.keking.kkanticrawler.config;
 
 
 import io.netty.channel.nio.NioEventLoopGroup;

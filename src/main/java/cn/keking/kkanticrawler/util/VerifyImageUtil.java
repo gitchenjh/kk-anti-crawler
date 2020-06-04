@@ -1,17 +1,14 @@
-package cn.keking.anti_reptile.util;
+package cn.keking.kkanticrawler.util;
 
-import cn.keking.anti_reptile.module.VerifyImageDTO;
+import cn.keking.kkanticrawler.module.VerifyImageDTO;
 import com.wf.captcha.utils.CaptchaUtil;
 import org.redisson.api.RBucket;
 import org.redisson.api.RedissonClient;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import java.awt.Color;
-
 import java.io.ByteArrayOutputStream;
 
 import java.util.Base64;
-import java.util.Random;
 import java.util.UUID;
 import java.util.concurrent.TimeUnit;
 
@@ -21,7 +18,7 @@ import java.util.concurrent.TimeUnit;
  */
 public class VerifyImageUtil {
 
-    private static final String VERIFY_CODE_KEY = "kk-antireptile_verifycdoe_";
+    private static final String VERIFY_CODE_KEY = "kk-anti-crawler-verify-code_";
 
     @Autowired
     private RedissonClient redissonClient;

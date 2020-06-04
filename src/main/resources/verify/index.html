@@ -2,7 +2,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-    <title>kk-anti-reptile验证</title>
+    <title>kk-anti-crawler验证</title>
     <script>
         function getXhr() {
             var xhr = null;
@@ -29,7 +29,7 @@
                     document.getElementById("verifyImg").src = verifyObj.verifyImgStr;
                 }
             }
-            xhr.open("POST", baseUrl + "/kk-anti-reptile/refresh?verifyId="+verifyId, "true");
+            xhr.open("POST", baseUrl + "/kk-anti-crawler/refresh?verifyId="+verifyId, "true");
             xhr.send();
         }
 
@@ -51,7 +51,7 @@
                     }
                 }
             }
-            xhr.open("POST", baseUrl + "/kk-anti-reptile/validate", "true");
+            xhr.open("POST", baseUrl + "/kk-anti-crawler/validate", "true");
             xhr.send(formData);
         }
 

@@ -1,12 +1,12 @@
 ## 概述
 
-kk-anti-reptile 是适用于`基于 spring-boot 开发的分布式系统`的开源反爬虫接口防刷组件。
+kk-anti-crawler 是适用于`基于 spring-boot 开发的分布式系统`的开源反爬虫接口防刷组件。
 
 ## 开源地址
 
-[https://gitee.com/kekingcn/kk-anti-reptile](https://gitee.com/kekingcn/kk-anti-reptile)
+[https://gitee.com/kekingcn/kk-anti-crawler](https://gitee.com/kekingcn/kk-anti-crawler)
 
-[https://github.com/kekingcn/kk-anti-reptile](https://github.com/kekingcn/kk-anti-reptile)
+[https://github.com/kekingcn/kk-anti-crawler](https://github.com/kekingcn/kk-anti-crawler)
 
 ## 系统要求
 
@@ -15,9 +15,9 @@ kk-anti-reptile 是适用于`基于 spring-boot 开发的分布式系统`的开�
 
 ## 工作流程
 
-kk-anti-reptile 使用 [SpringMVC拦截器](https://docs.spring.io/spring/docs/current/spring-framework-reference/web.html#mvc-handlermapping-interceptor) 对请求进行过滤，通过 spring-boot 的扩展点机制，实例化一个Spring HandlerInterceptor Bean，通过 Spring 注入到 Servlet 容器中，从而实现对请求的过滤
+kk-anti-crawler 使用 [SpringMVC拦截器](https://docs.spring.io/spring/docs/current/spring-framework-reference/web.html#mvc-handlermapping-interceptor) 对请求进行过滤，通过 spring-boot 的扩展点机制，实例化一个Spring HandlerInterceptor Bean，通过 Spring 注入到 Servlet 容器中，从而实现对请求的过滤
 
-在 kk-anti-reptile 的过滤 Interceptor 内部，又通过责任链模式，将各种不同的过滤规则织入，并提供抽象接口，可由调用方进行规则扩展
+在 kk-anti-crawler 的过滤 Interceptor 内部，又通过责任链模式，将各种不同的过滤规则织入，并提供抽象接口，可由调用方进行规则扩展
 
 Interceptor 调用则链进行请求过滤，如过滤不通过，则拦截请求，返回状态码`509`，并输出验证码输入页面，输出验证码正确后，调用过滤规则链对规则进行重置
 
@@ -35,36 +35,36 @@ ua-rule 通过判断请求携带的 User-Agent，得到操作系统、设备信�
 
 命中爬虫和防盗刷规则后，会阻断请求，并生成接除阻断的验证码，验证码有多种组合方式，如果客户端可以正确输入验证码，则可以继续访问
 
-![](https://kkfileview.keking.cn/anti-reptile/06114318_NlQW.png)
+![](https://kkfileview.keking.cn/anti-crawler/06114318_NlQW.png)
 
 验证码有中文、英文字母+数字、简单算术三种形式，每种形式又有静态图片和 GIF 动图两种图片格式，即目前共有如下六种，所有类型的验证码会随机出现，目前技术手段识别难度极高，可有效阻止防止爬虫大规模爬取数据
 
-![](https://kkfileview.keking.cn/anti-reptile/up-0e140d960cdf1771d71663dace1b3b0b151.png)![](https://kkfileview.keking.cn/anti-reptile/up-1e95900b91df071f7fe9c6e487e1d8ec3bb.gif)
+![](https://kkfileview.keking.cn/anti-crawler/up-0e140d960cdf1771d71663dace1b3b0b151.png)![](https://kkfileview.keking.cn/anti-crawler/up-1e95900b91df071f7fe9c6e487e1d8ec3bb.gif)
 
-![](https://kkfileview.keking.cn/anti-reptile/up-ede7ddd514dbd1be7744453cabd56a67e81.png)![](https://oscimg.oschina.net/oscnet/up-42a72529601c93ab4d7bbd43dc4b10ae795.gif)
+![](https://kkfileview.keking.cn/anti-crawler/up-ede7ddd514dbd1be7744453cabd56a67e81.png)![](https://kkfileview.keking.cn/anti-crawler/up-42a72529601c93ab4d7bbd43dc4b10ae795.gif)
 
-![](https://kkfileview.keking.cn/anti-reptile/up-f63acf78d822e46b1d4a490fac235e5f098.png)![](https://kkfileview.keking.cn/anti-reptile/up-1884209f099a909b2839fddfa09ff7025f0.gif)
+![](https://kkfileview.keking.cn/anti-crawler/up-f63acf78d822e46b1d4a490fac235e5f098.png)![](https://kkfileview.keking.cn/anti-crawler/up-1884209f099a909b2839fddfa09ff7025f0.gif)
 
 ## 接入使用
 
-接入非常简单，只需要引用 kk-anti-reptile 的 maven 依赖，并配置启用 kk-anti-reptile 即可  
+接入非常简单，只需要引用 kk-anti-crawler 的 maven 依赖，并配置启用 kk-anti-crawler 即可  
 ### 1. 加入 maven 依赖
 
 ```xml
 <dependency>
     <groupId>cn.keking.project</groupId>
-    <artifactId>kk-anti-reptile</artifactId>
-    <version>1.0.0-RELEASE</version>
+    <artifactId>kk-anti-crawler</artifactId>
+    <version>1.1.0-SNAPSHOT</version>
 </dependency>
 
 ```
 
-### 2. 配置启用 kk-anti-reptile
+### 2. 配置启用 kk-anti-crawler
 
-在spring-boot配置文件中加入如下配置 `anti.reptile.manager.enabled`
+在spring-boot配置文件中加入如下配置 `anti.crawler.manager.enabled`
 
 ```properties
-anti.reptile.manager.enabled = true
+anti.crawler.manager.enabled = true
 ```
 ### 3. 配置需要反爬的接口
 
@@ -72,21 +72,21 @@ anti.reptile.manager.enabled = true
 
 1. 使用配置文件
 
-在spring-boot配置文件中加入如下配置项`anti.reptile.manager.include-urls`，值为反爬的接口URI（如：/client/list），支持正则表达式匹配（如：^/admin/.*$），多项用`,`分隔
+在spring-boot配置文件中加入如下配置项`anti.crawler.manager.include-urls`，值为反爬的接口URI（如：/client/list），支持正则表达式匹配（如：^/admin/.*$），多项用`,`分隔
 ```properties
-anti.reptile.manager.include-urls = /client/list,/user/list,^/admin/.*$
+anti.crawler.manager.include-urls = /client/list,/user/list,^/admin/.*$
 ```
 
 2. 使用注解
 
-在需要反爬的接口Controller对象对应的接口上加上`@AntiReptile`注解即可，示例如下
+在需要反爬的接口Controller对象对应的接口上加上`@AntiCrawler`注解即可，示例如下
 
 ```java
 @RestController
 @RequestMapping("/demo")
 public class DemoController {
 
-    @AntiReptile
+    @AntiCrawler
     @GetMapping("")
     public String demo() {
         return "Hello，World!";
@@ -132,7 +132,7 @@ apollo.bootstrap.enabled = true
 
 1.  需要有 Redisson 连接
 
-如果项目中有用到 Redisson，kk-anti-reptile 会自动获取 RedissonClient 实例对象; 如果没用到，需要在配置文件加入如下 Redisson 连接相关配置
+如果项目中有用到 Redisson，kk-anti-crawler 会自动获取 RedissonClient 实例对象; 如果没用到，需要在配置文件加入如下 Redisson 连接相关配置
 
 ```properties
 spring.redisson.address = redis://192.168.1.204:6379
@@ -142,8 +142,8 @@ spring.redisson.password = xxx
 ## 配置一览表
 
 在 spring-boot 中，所有配置在配置文件都会有自动提示和说明，如下图  
-![配置自动提示及说明](https://kkfileview.keking.cn/anti-reptile/06114319_IJlq.png)  
-所有配置都以`anti.reptile.manager`为前缀，如下为所有配置项及说明
+![配置自动提示及说明](https://kkfileview.keking.cn/anti-crawler/06114319_IJlq.png)  
+所有配置都以`kk.anti.crawler`为前缀，如下为所有配置项及说明
 
 | NAME | 描述 | 默认值 | 示例 |
 | --- | --- | --- | --- |
@@ -166,4 +166,4 @@ spring.redisson.password = xxx
 
 使用过程中有任何问题，都可以加入官方 QQ 群：613025121 咨询讨论 
 
-![官方 QQ 群](https://kkfileview.keking.cn/anti-reptile/qq.png)
+![官方 QQ 群](https://kkfileview.keking.cn/anti-crawler/qq.png)

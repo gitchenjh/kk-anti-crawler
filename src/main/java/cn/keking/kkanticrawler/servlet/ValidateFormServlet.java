@@ -1,12 +1,11 @@
-package cn.keking.anti_reptile.servlet;
+package cn.keking.kkanticrawler.servlet;
 
-import cn.keking.anti_reptile.ValidateFormService;
-import cn.keking.anti_reptile.util.CrosUtil;
+import cn.keking.kkanticrawler.ValidateFormService;
+import cn.keking.kkanticrawler.util.CrosUtil;
 import org.springframework.context.ApplicationContext;
 import org.springframework.web.context.support.WebApplicationContextUtils;
 
 import javax.servlet.ServletContext;
-import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -21,7 +20,7 @@ public class ValidateFormServlet extends HttpServlet {
 
     private ValidateFormService validateFormService;
 
-    private AtomicBoolean initialized = new AtomicBoolean(false);
+    private final AtomicBoolean initialized = new AtomicBoolean(false);
 
     private synchronized void init(ServletContext servletContext) {
         ApplicationContext ctx = WebApplicationContextUtils.getWebApplicationContext(servletContext);
@@ -30,7 +29,7 @@ public class ValidateFormServlet extends HttpServlet {
     }
 
     @Override
-    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
         if (!initialized.get()) {
             init(request.getServletContext());
             initialized.set(true);
@@ -41,6 +40,5 @@ public class ValidateFormServlet extends HttpServlet {
         response.setStatus(200);
         response.getWriter().write(result);
         response.getWriter().close();
-        return;
     }
 }

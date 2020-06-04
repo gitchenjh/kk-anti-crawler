@@ -1,4 +1,4 @@
-package cn.keking.anti_reptile.rule;
+package cn.keking.kkanticrawler.rule;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -10,9 +10,9 @@ import java.util.List;
  */
 public class RuleActuator {
 
-    private  List<AntiReptileRule> ruleList;
+    private List<KKAntiCrawlerRule> ruleList;
 
-    public RuleActuator(List<AntiReptileRule> rules) {
+    public RuleActuator(List<KKAntiCrawlerRule> rules) {
         ruleList = rules;
     }
 
@@ -23,7 +23,7 @@ public class RuleActuator {
      * @return 请求是否允许通过
      */
     public boolean isAllowed(HttpServletRequest request , HttpServletResponse response){
-        for (AntiReptileRule rule: ruleList){
+        for (KKAntiCrawlerRule rule: ruleList){
             if (rule.execute(request,response)){
                 return false;
             }

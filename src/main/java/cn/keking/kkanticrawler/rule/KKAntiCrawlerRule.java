@@ -1,4 +1,4 @@
-package cn.keking.anti_reptile.rule;
+package cn.keking.kkanticrawler.rule;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -7,7 +7,7 @@ import javax.servlet.http.HttpServletResponse;
  * @author kl @kailing.pub
  * @since 2019/7/8
  */
-public interface AntiReptileRule {
+public interface KKAntiCrawlerRule {
     /**
      * 反爬规则具体实现
      * @param request 请求

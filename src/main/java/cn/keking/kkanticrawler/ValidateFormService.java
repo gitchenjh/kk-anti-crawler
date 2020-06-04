@@ -1,16 +1,15 @@
-package cn.keking.anti_reptile;
+package cn.keking.kkanticrawler;
 
-import cn.keking.anti_reptile.module.VerifyImageDTO;
-import cn.keking.anti_reptile.module.VerifyImageVO;
-import cn.keking.anti_reptile.rule.RuleActuator;
-import cn.keking.anti_reptile.util.VerifyImageUtil;
+import cn.keking.kkanticrawler.module.VerifyImageDTO;
+import cn.keking.kkanticrawler.module.VerifyImageVO;
+import cn.keking.kkanticrawler.rule.RuleActuator;
+import cn.keking.kkanticrawler.util.VerifyImageUtil;
 
 import org.apache.commons.fileupload.FileItem;
 import org.apache.commons.fileupload.FileUploadException;
 import org.apache.commons.fileupload.disk.DiskFileItemFactory;
 import org.apache.commons.fileupload.servlet.ServletFileUpload;
 import org.springframework.beans.BeanUtils;
-import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.servlet.http.HttpServletRequest;
 import java.io.UnsupportedEncodingException;
@@ -25,23 +24,35 @@ import java.util.Map;
 
 public class ValidateFormService {
 
-    @Autowired
-    private RuleActuator actuator;
+    private static final String JSON_RESULT_OK = "{\"result\":true}";
 
-    @Autowired
-    private VerifyImageUtil verifyImageUtil;
+    private static final String JSON_RESULT_FAILED = "{\"result\":true}";
+
+    private final RuleActuator actuator;
+
+    private final VerifyImageUtil verifyImageUtil;
+
+    public ValidateFormService(RuleActuator ruleActuator,
+                               VerifyImageUtil verifyImageUtil) {
+        this.actuator = ruleActuator;
+        this.verifyImageUtil = verifyImageUtil;
+
+    }
 
     public String validate(HttpServletRequest request) throws UnsupportedEncodingException {
         DiskFileItemFactory factory = new DiskFileItemFactory();
         ServletFileUpload upload = new ServletFileUpload(factory);
         upload.setHeaderEncoding("UTF-8");
-        List items = null;
+        List<FileItem> items = null;
         try {
             items = upload.parseRequest(request);
         } catch (FileUploadException e) {
             e.printStackTrace();
         }
-        Map<String, String> params = new HashMap<String, String>();
+        if (items == null) {
+            return JSON_RESULT_FAILED;
+        }
+        Map<String, String> params = new HashMap<>();
         for(Object object : items){
             FileItem fileItem = (FileItem) object;
             if (fileItem.isFormField()) {
@@ -54,9 +65,9 @@ public class ValidateFormService {
         String actualResult = verifyImageUtil.getVerifyCodeFromRedis(verifyId);
         if (actualResult != null && request != null && actualResult.equals(result.toLowerCase())) {
             actuator.reset(request, realRequestUri);
-            return "{\"result\":true}";
+            return JSON_RESULT_OK;
         }
-        return "{\"result\":false}";
+        return JSON_RESULT_FAILED;
     }
 
     public String refresh(HttpServletRequest request) {
@@ -66,7 +77,6 @@ public class ValidateFormService {
         verifyImageUtil.saveVerifyCodeToRedis(verifyImage);
         VerifyImageVO verifyImageVO = new VerifyImageVO();
         BeanUtils.copyProperties(verifyImage, verifyImageVO);
-        String result = "{\"verifyId\": \"" + verifyImageVO.getVerifyId() + "\",\"verifyImgStr\": \"" + verifyImageVO.getVerifyImgStr() + "\"}";
-        return result;
+        return "{\"verifyId\": \"" + verifyImageVO.getVerifyId() + "\",\"verifyImgStr\": \"" + verifyImageVO.getVerifyImgStr() + "\"}";
     }
 }

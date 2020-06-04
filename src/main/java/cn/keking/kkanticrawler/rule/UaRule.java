@@ -1,6 +1,6 @@
-package cn.keking.anti_reptile.rule;
+package cn.keking.kkanticrawler.rule;
 
-import cn.keking.anti_reptile.config.AntiReptileProperties;
+import cn.keking.kkanticrawler.config.KKAntiCrawlerProperties;
 import eu.bitwalker.useragentutils.DeviceType;
 import eu.bitwalker.useragentutils.OperatingSystem;
 import eu.bitwalker.useragentutils.UserAgent;
@@ -16,11 +16,11 @@ import javax.servlet.http.HttpServletResponse;
 public class UaRule extends AbstractRule {
 
     @Autowired
-    private AntiReptileProperties properties;
+    private KKAntiCrawlerProperties properties;
 
     @Override
     protected boolean doExecute(HttpServletRequest request, HttpServletResponse response) {
-        AntiReptileProperties.UaRule uaRule = properties.getUaRule();
+        KKAntiCrawlerProperties.UaRule uaRule = properties.getUaRule();
         UserAgent userAgent = UserAgent.parseUserAgentString(request.getHeader("User-Agent"));
         OperatingSystem os = userAgent.getOperatingSystem();
         OperatingSystem osGroup = userAgent.getOperatingSystem().getGroup();

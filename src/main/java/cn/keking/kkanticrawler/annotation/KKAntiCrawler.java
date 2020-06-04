@@ -1,4 +1,4 @@
-package cn.keking.anti_reptile.annotation;
+package cn.keking.kkanticrawler.annotation;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
@@ -11,5 +11,5 @@ import java.lang.annotation.Target;
  */
 @Target(value = {ElementType.METHOD})
 @Retention(value = RetentionPolicy.RUNTIME)
-public @interface AntiReptile {
+public @interface KKAntiCrawler {
 }
