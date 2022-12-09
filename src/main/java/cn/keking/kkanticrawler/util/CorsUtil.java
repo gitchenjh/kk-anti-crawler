@@ -6,7 +6,7 @@ import javax.servlet.http.HttpServletResponse;
  * @author chenjh
  * @since 2019/7/17 17:22
  */
-public class CrosUtil {
+public class CorsUtil {
 
     private static final String ALLOWED_HEADERS = "x-requested-with, authorization, Content-Type, Authorization, credential, X-XSRF-TOKEN,token,username,client";
 

@@ -4,7 +4,7 @@ import cn.keking.kkanticrawler.annotation.KKAntiCrawler;
 import cn.keking.kkanticrawler.config.KKAntiCrawlerProperties;
 import cn.keking.kkanticrawler.module.VerifyImageDTO;
 import cn.keking.kkanticrawler.rule.RuleActuator;
-import cn.keking.kkanticrawler.util.CrosUtil;
+import cn.keking.kkanticrawler.util.CorsUtil;
 import cn.keking.kkanticrawler.util.VerifyImageUtil;
 import org.springframework.context.ApplicationContext;
 import org.springframework.core.annotation.AnnotationUtils;
@@ -82,7 +82,7 @@ public class KKAntiCrawlerInterceptor extends HandlerInterceptorAdapter {
         boolean isKKAntiCrawlerAnnotation = kkAntiCrawler != null;
         String requestUrl = request.getRequestURI();
         if (isIntercept(requestUrl, isKKAntiCrawlerAnnotation) && !actuator.isAllowed(request, response)) {
-            CrosUtil.setCrosHeader(response);
+            CorsUtil.setCrosHeader(response);
             response.setContentType("text/html;charset=utf-8");
             response.setStatus(509);
             VerifyImageDTO verifyImage = verifyImageUtil.generateVerifyImg();

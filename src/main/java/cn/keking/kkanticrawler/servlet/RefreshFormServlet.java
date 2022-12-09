@@ -1,7 +1,7 @@
 package cn.keking.kkanticrawler.servlet;
 
 import cn.keking.kkanticrawler.ValidateFormService;
-import cn.keking.kkanticrawler.util.CrosUtil;
+import cn.keking.kkanticrawler.util.CorsUtil;
 import org.springframework.context.ApplicationContext;
 import org.springframework.web.context.support.WebApplicationContextUtils;
 
@@ -36,7 +36,7 @@ public class RefreshFormServlet extends HttpServlet {
             initialized.set(true);
         }
         String result = validateFormService.refresh(request);
-        CrosUtil.setCrosHeader(response);
+        CorsUtil.setCrosHeader(response);
         response.setContentType("application/json;charset=utf-8");
         response.setStatus(200);
         response.getWriter().write(result);
